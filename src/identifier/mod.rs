@@ -1,0 +1,42 @@
+use crate::dynamic_value::DynamicValue;
+use dpp::identifier::Identifier;
+use dpp::platform_value::string_encoding::Encoding;
+use napi_derive::napi;
+
+#[napi(js_name = "IdentifierWASM")]
+pub struct IdentifierWASM {
+    id: Identifier,
+}
+
+#[napi]
+impl IdentifierWASM {
+    #[napi(constructor)]
+    pub fn new(js_id: DynamicValue) -> Result<IdentifierWASM, napi::Error> {
+        match js_id {
+            DynamicValue::Text(str) => Ok(IdentifierWASM {
+                id: Identifier::from_string(str.as_str(), Encoding::Base58).map_err(|err| {
+                    napi::Error::new(napi::Status::GenericFailure, err.to_string())
+                })?,
+            }),
+            DynamicValue::Bytes(bytes) => Ok(IdentifierWASM {
+                id: Identifier::from_vec(bytes).map_err(|err| {
+                    napi::Error::new(napi::Status::GenericFailure, err.to_string())
+                })?,
+            }),
+            _ => Err(napi::Error::new(
+                napi::Status::GenericFailure,
+                "Bad identifier type",
+            ))?,
+        }
+    }
+
+    #[napi]
+    pub fn base58(&self) -> String {
+        self.id.to_string(Encoding::Base58)
+    }
+
+    #[napi]
+    pub fn hex(&self) -> String {
+        self.id.to_string(Encoding::Hex)
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "pshenmic-dpp-napi",
+  "private": true,
+  "main": "build/pshenmic_dpp_napi.js",
+  "version": "0.1.0",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "ferric build --output build"
+  },
+  "devDependencies": {
+    "node-addon-api": "^8.5.0",
+    "ferric-cli": "^0.3.7"
+  },
+  "binary": {
+    "napi_versions": [
+      6
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+[package]
+name = "pshenmic-dpp-napi"
+authors = ["owl352 <kokosinca123@gmail.com>"]
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+dpp = { git = "https://github.com/owl352/platform", rev = "4aa29b8", default-features = false }
+napi = {version = "3.4.0", features = ["napi6"]}
+napi-derive = "3.3.0"
+
+[build-dependencies]
+napi-build = "2.2.4"
