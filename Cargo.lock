@@ -369,6 +369,16 @@ dependencies = [
 
 [[package]]
 name = "dpp"
+version = "0.1.0"
+dependencies = [
+ "dpp 2.0.1",
+ "napi",
+ "napi-build",
+ "napi-derive",
+]
+
+[[package]]
+name = "dpp"
 version = "2.0.1"
 source = "git+https://github.com/owl352/platform?rev=4aa29b8#4aa29b808a1a825d37043e118a26a892cfb8ad0a"
 dependencies = [
@@ -865,16 +875,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5ee95bc4ef87b8d5ba32e8b7714ccc834865276eab0aed5c9958d00ec45f49e8"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "pshenmic-dpp-napi"
-version = "0.1.0"
-dependencies = [
- "dpp",
- "napi",
- "napi-build",
- "napi-derive",
 ]
 
 [[package]]

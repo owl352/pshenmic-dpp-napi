@@ -1,4 +1,4 @@
-use napi::bindgen_prelude::{BigInt, Null};
+use napi::bindgen_prelude::{Null};
 use napi_derive::napi;
 
 #[derive(Debug)]
@@ -9,7 +9,6 @@ pub enum DynamicValue {
     Uint8(u8),
     Uint16(u16),
     Uint32(u32),
-    Uint64(BigInt),
     Bool(bool),
     Null(Null)
 }
