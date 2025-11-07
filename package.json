@@ -1,16 +1,27 @@
 {
   "name": "pshenmic-dpp-napi",
   "private": true,
-  "main": "build/dpp.js",
+  "main": "pkg/dpp.js",
   "version": "0.1.0",
   "files": [
-    "build"
+    "pkg"
   ],
+  "exports": {
+    ".": "./pkg/dpp.js",
+    "./wasm": "./pkg/wasm.js"
+  },
   "scripts": {
-    "build": "ferric build --output build"
+    "build": "node build.js",
+    "ferric:build": "ferric build"
   },
   "devDependencies": {
     "ferric-cli": "^0.3.7",
-    "node-addon-api": "^8.5.0"
+    "node-addon-api": "^8.5.0",
+    "toml": "^3.0.0"
+  },
+  "dependencies": {
+    "@emnapi/core": "^1.7.0",
+    "@emnapi/runtime": "^1.7.0",
+    "@tybys/wasm-util": "^0.10.1"
   }
 }

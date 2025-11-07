@@ -3,6 +3,11 @@ use dpp::identifier::Identifier;
 use dpp::platform_value::string_encoding::Encoding;
 use napi_derive::napi;
 
+pub enum DynId {
+    V(DynamicValue),
+    S(IdentifierWASM)
+}
+
 #[napi(js_name = "IdentifierWASM")]
 pub struct IdentifierWASM {
     id: Identifier,
