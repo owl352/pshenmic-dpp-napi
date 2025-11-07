@@ -1,7 +1,7 @@
-const {WASI} = require("@tybys/wasm-util")
-const {getDefaultContext} = require("@emnapi/runtime")
-const {instantiateNapiModuleSync} = require("@emnapi/core")
-const wasmBase64Bytes = require('./wasmBytes.js')
+import {WASI} from "@tybys/wasm-util"
+import {getDefaultContext} from "@emnapi/runtime"
+import {instantiateNapiModuleSync} from "@emnapi/core"
+import wasmBase64Bytes from './wasmBytes.js'
 
 function base64ToArrayBuffer(base64) {
   var binaryString = atob(base64);
@@ -52,4 +52,4 @@ const wasm = instantiateNapiModuleSync(wasmBytes, {
   },
 })
 
-module.exports = wasm.napiModule.exports;
+export const {IdentifierWASM} = wasm.napiModule.exports;

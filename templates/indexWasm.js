@@ -1,1 +1,1 @@
-module.exports = require('./wasm/wasm.js');
+export * from'./wasm/wasm.js';
