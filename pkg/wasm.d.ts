@@ -12,6 +12,15 @@ export declare class IdentifierWASM {
   constructor(jsId: DynamicValue)
   base58(): string
   hex(): string
+  base64(): string
+  bytes(): Array<number>
+}
+
+export declare class IdentityWASM {
+  constructor(id: IdentifierWASM, platformVersion: PlatformVersionWASM)
+  set id(id: IdentifierWASM)
+  set balance(balance: Uint64String)
+  set revision(revision: Uint64String)
 }
 
 export type DynamicValue =
@@ -20,5 +29,24 @@ export type DynamicValue =
   | { type: 'Uint8', field0: number }
   | { type: 'Uint16', field0: number }
   | { type: 'Uint32', field0: number }
+  | { type: 'Uint64', field0: Uint64String }
   | { type: 'Bool', field0: boolean }
   | { type: 'Null', field0: null }
+  | { type: 'Object', field0: Array<[DynamicValue, DynamicValue]> }
+  | { type: 'Array', field0: Array<DynamicValue> }
+
+export declare const enum PlatformVersionWASM {
+  PLATFORM_V1 = 1,
+  PLATFORM_V2 = 2,
+  PLATFORM_V3 = 3,
+  PLATFORM_V4 = 4,
+  PLATFORM_V5 = 5,
+  PLATFORM_V6 = 6,
+  PLATFORM_V7 = 7,
+  PLATFORM_V8 = 8,
+  PLATFORM_V9 = 9
+}
+
+export interface Uint64String {
+  value: string
+}

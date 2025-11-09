@@ -3,14 +3,22 @@ use dpp::identifier::Identifier;
 use dpp::platform_value::string_encoding::Encoding;
 use napi_derive::napi;
 
-pub enum DynId {
-    V(DynamicValue),
-    S(IdentifierWASM)
-}
-
+#[derive(Clone)]
 #[napi(js_name = "IdentifierWASM")]
 pub struct IdentifierWASM {
     id: Identifier,
+}
+
+impl From<Identifier> for IdentifierWASM {
+    fn from(id: Identifier) -> Self {
+        IdentifierWASM { id }
+    }
+}
+
+impl From<IdentifierWASM> for Identifier {
+    fn from(value: IdentifierWASM) -> Self {
+        Identifier::from(value.id)
+    }
 }
 
 #[napi]
@@ -43,5 +51,21 @@ impl IdentifierWASM {
     #[napi]
     pub fn hex(&self) -> String {
         self.id.to_string(Encoding::Hex)
+    }
+
+    #[napi]
+    pub fn base64(&self) -> String {
+        self.id.to_string(Encoding::Base64)
+    }
+
+    #[napi]
+    pub fn bytes(&self) -> Vec<u8> {
+        self.id.to_vec()
+    }
+}
+
+impl IdentifierWASM {
+    pub fn to_slice(&self) -> [u8; 32] {
+        self.id.as_bytes().clone()
     }
 }

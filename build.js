@@ -43,8 +43,7 @@ async function main() {
 
   fs.writeFileSync(path.join(wasmOutputDir, 'wasmBytes.js'), `export default "${wasmBytes.toString('base64')}"`)
 
-  fs.copyFileSync('./templates/wasm.js', path.join(wasmOutputDir, 'wasm.js'))
-  fs.copyFileSync('./templates/wasm.js', path.join(wasmOutputDir, 'wasm.js'))
+  fs.copyFileSync('./templates/wasm.js', path.join(outputDir, 'wasm.js'))
   fs.copyFileSync(path.join(outputDir, `${rustCrateName}.d.ts`), path.join(outputDir, 'wasm.d.ts'))
 
   console.log(`Done ✨`)

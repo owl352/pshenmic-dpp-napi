@@ -1,7 +1,7 @@
 import {WASI} from "@tybys/wasm-util"
 import {getDefaultContext} from "@emnapi/runtime"
 import {instantiateNapiModuleSync} from "@emnapi/core"
-import wasmBase64Bytes from './wasmBytes.js'
+import wasmBase64Bytes from './wasm/wasmBytes.js'
 
 function base64ToArrayBuffer(base64) {
   var binaryString = atob(base64);
