@@ -17,7 +17,7 @@ use dpp::{
     platform_value::string_encoding::encode,
     serialization::{PlatformDeserializable, PlatformSerializable},
 };
-use napi::Status;
+use napi::{Status, bindgen_prelude::Uint8Array};
 use napi_derive::napi;
 
 #[derive(Clone)]
@@ -111,7 +111,7 @@ impl IdentityWASM {
         let bytes = decode(hex.as_str(), Encoding::Hex)
             .map_err(|err| napi::Error::new(Status::GenericFailure, err.to_string()))?;
 
-        IdentityWASM::from_bytes(bytes)
+        IdentityWASM::from_bytes(bytes.into())
     }
 
     #[napi(js_name = "fromBase64")]
@@ -119,19 +119,19 @@ impl IdentityWASM {
         let bytes = decode(base64.as_str(), Encoding::Base64)
             .map_err(|err| napi::Error::new(Status::GenericFailure, err.to_string()))?;
 
-        IdentityWASM::from_bytes(bytes)
+        IdentityWASM::from_bytes(bytes.into())
     }
 
     #[napi(js_name = "fromBytes")]
-    pub fn from_bytes(bytes: Vec<u8>) -> Result<IdentityWASM, napi::Error> {
-        Ok(Identity::deserialize_from_bytes(bytes.as_slice())
+    pub fn from_bytes(bytes: Uint8Array) -> Result<IdentityWASM, napi::Error> {
+        Ok(Identity::deserialize_from_bytes(bytes.to_vec().as_slice())
             .with_js_error()?
             .into())
     }
 
     #[napi(js_name = "bytes")]
-    pub fn to_bytes(&self) -> Result<Vec<u8>, napi::Error> {
-        self.identity.serialize_to_bytes().with_js_error()
+    pub fn to_bytes(&self) -> Result<Uint8Array, napi::Error> {
+        Ok(self.identity.serialize_to_bytes().with_js_error()?.into())
     }
 
     #[napi(js_name = "hex")]

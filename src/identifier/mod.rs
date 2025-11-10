@@ -1,6 +1,7 @@
 use crate::dynamic_value::DynamicValue;
 use dpp::identifier::Identifier;
 use dpp::platform_value::string_encoding::Encoding;
+use napi::bindgen_prelude::Uint8Array;
 use napi_derive::napi;
 
 #[derive(Clone)]
@@ -32,7 +33,7 @@ impl IdentifierWASM {
                 })?,
             }),
             DynamicValue::Bytes(bytes) => Ok(IdentifierWASM {
-                id: Identifier::from_vec(bytes).map_err(|err| {
+                id: Identifier::from_vec(bytes.to_vec()).map_err(|err| {
                     napi::Error::new(napi::Status::GenericFailure, err.to_string())
                 })?,
             }),
@@ -59,8 +60,8 @@ impl IdentifierWASM {
     }
 
     #[napi]
-    pub fn bytes(&self) -> Vec<u8> {
-        self.id.to_vec()
+    pub fn bytes(&self) -> Uint8Array {
+        self.id.to_vec().into()
     }
 }
 

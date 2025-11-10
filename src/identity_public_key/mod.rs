@@ -15,6 +15,7 @@ use dpp::{
     prelude::IdentityPublicKey,
 };
 use napi::Status;
+use napi::bindgen_prelude::Uint8Array;
 use napi_derive::napi;
 
 use crate::{
@@ -80,11 +81,11 @@ impl IdentityPublicKeyWASM {
     #[napi(js_name = "validatePrivateKey")]
     pub fn validate_private_key(
         &self,
-        js_private_key_bytes: Vec<u8>,
+        js_private_key_bytes: Uint8Array,
         js_network: DynamicValue,
     ) -> Result<bool, napi::Error> {
         let mut private_key_bytes = [0u8; 32];
-        let len = js_private_key_bytes.len().min(32);
+        let len = js_private_key_bytes.to_vec().len().min(32);
         private_key_bytes[..len].copy_from_slice(&js_private_key_bytes[..len]);
 
         let network = Network::from(NetworkWASM::try_from(js_network)?);
@@ -232,8 +233,8 @@ impl IdentityPublicKeyWASM {
     }
 
     #[napi(js_name = bytes)]
-    pub fn to_byes(&self) -> Result<Vec<u8>, napi::Error> {
-        self.public_key.serialize_to_bytes().with_js_error()
+    pub fn to_byes(&self) -> Result<Uint8Array, napi::Error> {
+        Ok(self.public_key.serialize_to_bytes().with_js_error()?.into())
     }
 
     #[napi(js_name = hex)]
@@ -259,9 +260,9 @@ impl IdentityPublicKeyWASM {
     }
 
     #[napi(js_name = fromBytes)]
-    pub fn from_bytes(bytes: Vec<u8>) -> Result<IdentityPublicKeyWASM, napi::Error> {
+    pub fn from_bytes(bytes: Uint8Array) -> Result<IdentityPublicKeyWASM, napi::Error> {
         let public_key =
-            IdentityPublicKey::deserialize_from_bytes(bytes.as_slice()).with_js_error()?;
+            IdentityPublicKey::deserialize_from_bytes(bytes.to_vec().as_slice()).with_js_error()?;
 
         Ok(IdentityPublicKeyWASM { public_key })
     }

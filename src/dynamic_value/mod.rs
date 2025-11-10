@@ -1,4 +1,4 @@
-use napi::{Status, bindgen_prelude::Null};
+use napi::{Status, bindgen_prelude::{Null, Uint8Array}};
 use napi_derive::napi;
 
 pub trait TryToU64 {
@@ -31,7 +31,7 @@ impl From<u64> for Uint64String {
 #[napi(js_name = "DynamicValue")]
 pub enum DynamicValue {
     Text(String),
-    Bytes(Vec<u8>),
+    Bytes(Uint8Array),
     Uint8(u8),
     Uint16(u16),
     Uint32(u32),

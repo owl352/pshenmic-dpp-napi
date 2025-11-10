@@ -13,12 +13,12 @@ export declare class IdentifierWASM {
   base58(): string
   hex(): string
   base64(): string
-  bytes(): Array<number>
+  bytes(): Uint8Array
 }
 
 export declare class IdentityPublicKeyWASM {
   constructor(id: number, jsPurpose: DynamicValue, jsSecurityLevel: DynamicValue, jsKeyType: DynamicValue, readOnly: boolean, binaryData: string, jsDisabledAt?: Uint64String | undefined | null)
-  validatePrivateKey(jsPrivateKeyBytes: Array<number>, jsNetwork: DynamicValue): boolean
+  validatePrivateKey(jsPrivateKeyBytes: Uint8Array, jsNetwork: DynamicValue): boolean
   get keyId(): number
   get purpose(): string
   get purposeNumber(): PurposeWASM
@@ -42,10 +42,10 @@ export declare class IdentityPublicKeyWASM {
   removeDisabledAt(): void
   getPublicKeyHash(): string
   isMaster(): boolean
-  bytes(): Array<number>
+  bytes(): Uint8Array
   hex(): string
   base64(): string
-  static fromBytes(bytes: Array<number>): IdentityPublicKeyWASM
+  static fromBytes(bytes: Uint8Array): IdentityPublicKeyWASM
   static fromHex(hex: string): IdentityPublicKeyWASM
   static fromBase64(hex: string): IdentityPublicKeyWASM
 }
@@ -63,15 +63,15 @@ export declare class IdentityWASM {
   getPublicKeys(): Array<IdentityPublicKeyWASM>
   static fromHex(hex: string): IdentityWASM
   static fromBase64(base64: string): IdentityWASM
-  static fromBytes(bytes: Array<number>): IdentityWASM
-  bytes(): Array<number>
+  static fromBytes(bytes: Uint8Array): IdentityWASM
+  bytes(): Uint8Array
   hex(): string
   base64(): string
 }
 
 export type DynamicValue =
   | { type: 'Text', field0: string }
-  | { type: 'Bytes', field0: Array<number> }
+  | { type: 'Bytes', field0: Uint8Array }
   | { type: 'Uint8', field0: number }
   | { type: 'Uint16', field0: number }
   | { type: 'Uint32', field0: number }
