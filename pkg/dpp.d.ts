@@ -21,9 +21,9 @@ export declare class IdentityPublicKeyWASM {
   validatePrivateKey(jsPrivateKeyBytes: Uint8Array, jsNetwork: DynamicValue): boolean
   get keyId(): number
   get purpose(): string
-  get purposeNumber(): PurposeWASM
+  get purposeNumber(): Purpose
   get securityLevel(): string
-  get securityLevelNumber(): SecurityLevelWASM
+  get securityLevelNumber(): SecurityLevel
   get keyType(): string
   get keyTypeNumber(): KeyType
   get readOnly(): boolean
@@ -108,7 +108,7 @@ export declare const enum PlatformVersionWASM {
   PLATFORM_V9 = 9
 }
 
-export declare const enum PurposeWASM {
+export declare const enum Purpose {
   AUTHENTICATION = 0,
   ENCRYPTION = 1,
   DECRYPTION = 2,
@@ -118,7 +118,7 @@ export declare const enum PurposeWASM {
   OWNER = 6
 }
 
-export declare const enum SecurityLevelWASM {
+export declare const enum SecurityLevel {
   MASTER = 0,
   CRITICAL = 1,
   HIGH = 2,

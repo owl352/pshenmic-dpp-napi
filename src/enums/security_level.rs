@@ -4,7 +4,7 @@ use napi_derive::napi;
 
 use crate::dynamic_value::{DynamicValue, TryToU64};
 
-#[napi]
+#[napi(js_name="SecurityLevel")]
 pub enum SecurityLevelWASM {
     MASTER = 0,
     CRITICAL = 1,

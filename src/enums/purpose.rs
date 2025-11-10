@@ -4,7 +4,7 @@ use napi_derive::napi;
 
 use crate::dynamic_value::{DynamicValue, TryToU64};
 
-#[napi(js_name = "PurposeWASM")]
+#[napi(js_name = "Purpose")]
 pub enum PurposeWASM {
     AUTHENTICATION = 0,
     ENCRYPTION = 1,
