@@ -1,6 +1,6 @@
 use crate::{
-    dynamic_value::{TryToU64, Uint64String},
-    enums::platform_version::PlatformVersionWASM,
+    dynamic_value::{DynamicValue, TryToU64, Uint64String},
+    enums::platform_version::{PlatformVersionWASM},
     identifier::IdentifierWASM,
     identity_public_key::IdentityPublicKeyWASM,
     utils::WithJsError,
@@ -43,8 +43,10 @@ impl IdentityWASM {
     #[napi(constructor)]
     pub fn new(
         id: &IdentifierWASM,
-        platform_version: PlatformVersionWASM,
+        js_platform_version: DynamicValue,
     ) -> Result<Self, napi::Error> {
+        let platform_version: PlatformVersionWASM = js_platform_version.try_into()?;
+
         Ok(IdentityWASM {
             identity: Identity::create_basic_identity(id.clone().into(), &platform_version.into())
                 .with_js_error()?,

@@ -51,7 +51,7 @@ export declare class IdentityPublicKeyWASM {
 }
 
 export declare class IdentityWASM {
-  constructor(id: IdentifierWASM, platformVersion: PlatformVersionWASM)
+  constructor(id: IdentifierWASM, jsPlatformVersion: DynamicValue)
   set id(id: IdentifierWASM)
   set balance(balance: Uint64String)
   set revision(revision: Uint64String)
