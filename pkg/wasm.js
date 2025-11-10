@@ -1,6 +1,6 @@
-import {WASI} from "@tybys/wasm-util"
-import {getDefaultContext} from "@emnapi/runtime"
-import {instantiateNapiModuleSync} from "@emnapi/core"
+import { WASI } from "@tybys/wasm-util"
+import { getDefaultContext } from "@emnapi/runtime"
+import { instantiateNapiModuleSync } from "@emnapi/core"
 import wasmBase64Bytes from './wasm/wasmBytes.js'
 
 function base64ToArrayBuffer(base64) {
@@ -19,7 +19,7 @@ const wasi = new WASI({
   print: function () {
     console.log.apply(console, arguments)
   },
-  printErr: function() {
+  printErr: function () {
     console.error.apply(console, arguments)
   },
 })
@@ -52,4 +52,4 @@ const wasm = instantiateNapiModuleSync(wasmBytes, {
   },
 })
 
-export const {IdentifierWASM} = wasm.napiModule.exports;
+export const { IdentifierWASM, KeyType, NetworkWASM, PlatformVersionWASM, PurposeWASM, SecurityLevelWASM, IdentityPublicKeyWASM, IdentityWASM } = wasm.napiModule.exports;
