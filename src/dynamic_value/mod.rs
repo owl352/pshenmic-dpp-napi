@@ -22,6 +22,11 @@ impl TryToU64 for Uint64String {
     }
 }
 
+impl From<u64> for Uint64String {
+    fn from(value: u64) -> Self {
+        Uint64String { value: value.to_string() }
+    }
+}
 
 #[napi(js_name = "DynamicValue")]
 pub enum DynamicValue {

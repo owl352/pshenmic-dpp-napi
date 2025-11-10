@@ -22,24 +22,6 @@ pub enum PlatformVersionWASM {
     PLATFORM_V9 = 9,
 }
 
-impl TryFrom<DynamicValue> for PlatformVersionWASM {
-    type Error = napi::Error;
-
-    fn try_from(value: DynamicValue) -> Result<Self, Self::Error> {
-        match value {
-            DynamicValue::Text(str) => PlatformVersionWASM::try_from(str),
-            DynamicValue::Uint8(num) => PlatformVersionWASM::try_from(num),
-            DynamicValue::Uint16(num) => PlatformVersionWASM::try_from(num as u8),
-            DynamicValue::Uint32(num) => PlatformVersionWASM::try_from(num as u8),
-            DynamicValue::Uint64(num_str) => PlatformVersionWASM::try_from(num_str.try_to_u64()? as u8),
-            _ => Err(napi::Error::new(
-                Status::InvalidArg,
-                "Invalid platform version value",
-            )),
-        }
-    }
-}
-
 impl From<PlatformVersionWASM> for String {
     fn from(version: PlatformVersionWASM) -> String {
         match version {
@@ -111,6 +93,26 @@ impl TryFrom<String> for PlatformVersionWASM {
             _ => Err(napi::Error::new(
                 Status::InvalidArg,
                 format!("unknown platform version value: {}", value),
+            )),
+        }
+    }
+}
+
+impl TryFrom<DynamicValue> for PlatformVersionWASM {
+    type Error = napi::Error;
+
+    fn try_from(value: DynamicValue) -> Result<Self, Self::Error> {
+        match value {
+            DynamicValue::Text(str) => PlatformVersionWASM::try_from(str),
+            DynamicValue::Uint8(num) => PlatformVersionWASM::try_from(num),
+            DynamicValue::Uint16(num) => PlatformVersionWASM::try_from(num as u8),
+            DynamicValue::Uint32(num) => PlatformVersionWASM::try_from(num as u8),
+            DynamicValue::Uint64(num_str) => {
+                PlatformVersionWASM::try_from(num_str.try_to_u64()? as u8)
+            }
+            _ => Err(napi::Error::new(
+                Status::InvalidArg,
+                "Invalid platform version value",
             )),
         }
     }

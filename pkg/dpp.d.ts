@@ -16,11 +16,57 @@ export declare class IdentifierWASM {
   bytes(): Array<number>
 }
 
+export declare class IdentityPublicKeyWASM {
+  constructor(id: number, jsPurpose: DynamicValue, jsSecurityLevel: DynamicValue, jsKeyType: DynamicValue, readOnly: boolean, binaryData: string, jsDisabledAt?: Uint64String | undefined | null)
+  validatePrivateKey(jsPrivateKeyBytes: Array<number>, jsNetwork: DynamicValue): boolean
+  get keyId(): number
+  get purpose(): string
+  get purposeNumber(): PurposeWASM
+  get securityLevel(): string
+  get securityLevelNumber(): SecurityLevelWASM
+  get keyType(): string
+  get keyTypeNumber(): KeyType
+  get readOnly(): boolean
+  get data(): string
+  get disabledAt(): Uint64String | null
+  set keyId(keyId: number)
+  set purpose(purpose: DynamicValue)
+  set purposeNumber(purpose: DynamicValue)
+  set securityLevel(securityLevel: DynamicValue)
+  set securityLevelNumber(securityLevel: DynamicValue)
+  set keyType(keyType: DynamicValue)
+  set keyTypeNumber(keyType: DynamicValue)
+  set readOnly(readOnly: boolean)
+  set data(binaryData: string)
+  set disabledAt(disabledAt: Uint64String)
+  removeDisabledAt(): void
+  getPublicKeyHash(): string
+  isMaster(): boolean
+  bytes(): Array<number>
+  hex(): string
+  base64(): string
+  static fromBytes(bytes: Array<number>): IdentityPublicKeyWASM
+  static fromHex(hex: string): IdentityPublicKeyWASM
+  static fromBase64(hex: string): IdentityPublicKeyWASM
+}
+
 export declare class IdentityWASM {
   constructor(id: IdentifierWASM, platformVersion: PlatformVersionWASM)
   set id(id: IdentifierWASM)
   set balance(balance: Uint64String)
   set revision(revision: Uint64String)
+  get id(): IdentifierWASM
+  get balance(): Uint64String
+  get revision(): Uint64String
+  addPublicKey(publicKey: IdentityPublicKeyWASM): void
+  getPublicKeyById(keyId: KeyID): IdentityPublicKeyWASM | null
+  getPublicKeys(): Array<IdentityPublicKeyWASM>
+  static fromHex(hex: string): IdentityWASM
+  static fromBase64(base64: string): IdentityWASM
+  static fromBytes(bytes: Array<number>): IdentityWASM
+  bytes(): Array<number>
+  hex(): string
+  base64(): string
 }
 
 export type DynamicValue =
@@ -35,6 +81,21 @@ export type DynamicValue =
   | { type: 'Object', field0: Array<[DynamicValue, DynamicValue]> }
   | { type: 'Array', field0: Array<DynamicValue> }
 
+export declare const enum KeyType {
+  ECDSA_SECP256K1 = 0,
+  BLS12_381 = 1,
+  ECDSA_HASH160 = 2,
+  BIP13_SCRIPT_HASH = 3,
+  EDDSA_25519_HASH160 = 4
+}
+
+export declare const enum NetworkWASM {
+  Mainnet = 0,
+  Testnet = 1,
+  Devnet = 2,
+  Regtest = 3
+}
+
 export declare const enum PlatformVersionWASM {
   PLATFORM_V1 = 1,
   PLATFORM_V2 = 2,
@@ -45,6 +106,23 @@ export declare const enum PlatformVersionWASM {
   PLATFORM_V7 = 7,
   PLATFORM_V8 = 8,
   PLATFORM_V9 = 9
+}
+
+export declare const enum PurposeWASM {
+  AUTHENTICATION = 0,
+  ENCRYPTION = 1,
+  DECRYPTION = 2,
+  TRANSFER = 3,
+  SYSTEM = 4,
+  VOTING = 5,
+  OWNER = 6
+}
+
+export declare const enum SecurityLevelWASM {
+  MASTER = 0,
+  CRITICAL = 1,
+  HIGH = 2,
+  MEDIUM = 3
 }
 
 export interface Uint64String {

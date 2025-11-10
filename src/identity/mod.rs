@@ -1,11 +1,24 @@
-use dpp::{identity::accessors::IdentitySettersV0, prelude::Identity};
-use napi_derive::napi;
-
 use crate::{
     dynamic_value::{TryToU64, Uint64String},
     enums::platform_version::PlatformVersionWASM,
     identifier::IdentifierWASM,
+    identity_public_key::IdentityPublicKeyWASM,
+    utils::WithJsError,
 };
+use dpp::{
+    identity::{
+        KeyID,
+        accessors::{IdentityGettersV0, IdentitySettersV0},
+    },
+    platform_value::string_encoding::{Encoding, decode},
+    prelude::Identity,
+};
+use dpp::{
+    platform_value::string_encoding::encode,
+    serialization::{PlatformDeserializable, PlatformSerializable},
+};
+use napi::Status;
+use napi_derive::napi;
 
 #[derive(Clone)]
 #[napi(js_name = IdentityWASM)]
@@ -34,7 +47,7 @@ impl IdentityWASM {
     ) -> Result<Self, napi::Error> {
         Ok(IdentityWASM {
             identity: Identity::create_basic_identity(id.clone().into(), &platform_version.into())
-                .map_err(|err| napi::Error::new(napi::Status::GenericFailure, err.to_string()))?,
+                .with_js_error()?,
         })
     }
 
@@ -53,5 +66,93 @@ impl IdentityWASM {
     pub fn set_revision(&mut self, revision: Uint64String) -> Result<(), napi::Error> {
         self.identity.set_revision(revision.try_to_u64()?);
         Ok(())
+    }
+
+    #[napi(getter, js_name = "id")]
+    pub fn get_id(&self) -> IdentifierWASM {
+        self.identity.id().into()
+    }
+
+    #[napi(getter, js_name = "balance")]
+    pub fn get_balance(&self) -> Uint64String {
+        self.identity.balance().into()
+    }
+
+    #[napi(getter, js_name = "revision")]
+    pub fn get_revision(&self) -> Uint64String {
+        self.identity.revision().into()
+    }
+
+    #[napi(js_name = "addPublicKey")]
+    pub fn add_public_key(&mut self, public_key: &IdentityPublicKeyWASM) {
+        self.identity.add_public_key(public_key.clone().into());
+    }
+
+    #[napi(js_name = "getPublicKeyById")]
+    pub fn get_public_key_by_id(&self, key_id: KeyID) -> Option<IdentityPublicKeyWASM> {
+        let identity_public_key = self.identity.get_public_key_by_id(key_id);
+        identity_public_key.map(|key| IdentityPublicKeyWASM::from(key.clone()))
+    }
+
+    #[napi(js_name = "getPublicKeys")]
+    pub fn get_public_keys(&self) -> Vec<IdentityPublicKeyWASM> {
+        let keys = self
+            .identity
+            .public_keys()
+            .iter()
+            .map(|(_index, key)| IdentityPublicKeyWASM::from(key.clone()))
+            .collect();
+
+        keys
+    }
+
+    #[napi(js_name = "fromHex")]
+    pub fn from_hex(hex: String) -> Result<IdentityWASM, napi::Error> {
+        let bytes = decode(hex.as_str(), Encoding::Hex)
+            .map_err(|err| napi::Error::new(Status::GenericFailure, err.to_string()))?;
+
+        IdentityWASM::from_bytes(bytes)
+    }
+
+    #[napi(js_name = "fromBase64")]
+    pub fn from_base64(base64: String) -> Result<IdentityWASM, napi::Error> {
+        let bytes = decode(base64.as_str(), Encoding::Base64)
+            .map_err(|err| napi::Error::new(Status::GenericFailure, err.to_string()))?;
+
+        IdentityWASM::from_bytes(bytes)
+    }
+
+    #[napi(js_name = "fromBytes")]
+    pub fn from_bytes(bytes: Vec<u8>) -> Result<IdentityWASM, napi::Error> {
+        Ok(Identity::deserialize_from_bytes(bytes.as_slice())
+            .with_js_error()?
+            .into())
+    }
+
+    #[napi(js_name = "bytes")]
+    pub fn to_bytes(&self) -> Result<Vec<u8>, napi::Error> {
+        self.identity.serialize_to_bytes().with_js_error()
+    }
+
+    #[napi(js_name = "hex")]
+    pub fn to_hex(&self) -> Result<String, napi::Error> {
+        Ok(encode(
+            self.identity
+                .serialize_to_bytes()
+                .with_js_error()?
+                .as_slice(),
+            Encoding::Hex,
+        ))
+    }
+
+    #[napi(js_name = "base64")]
+    pub fn to_base64(&self) -> Result<String, napi::Error> {
+        Ok(encode(
+            self.identity
+                .serialize_to_bytes()
+                .with_js_error()?
+                .as_slice(),
+            Encoding::Base64,
+        ))
     }
 }
