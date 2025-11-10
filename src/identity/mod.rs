@@ -91,7 +91,7 @@ impl IdentityWASM {
     }
 
     #[napi(js_name = "getPublicKeyById")]
-    pub fn get_public_key_by_id(&self, key_id: KeyID) -> Option<IdentityPublicKeyWASM> {
+    pub fn get_public_key_by_id(&self, key_id: u32) -> Option<IdentityPublicKeyWASM> {
         let identity_public_key = self.identity.get_public_key_by_id(key_id);
         identity_public_key.map(|key| IdentityPublicKeyWASM::from(key.clone()))
     }

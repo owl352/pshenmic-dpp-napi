@@ -59,7 +59,7 @@ export declare class IdentityWASM {
   get balance(): Uint64String
   get revision(): Uint64String
   addPublicKey(publicKey: IdentityPublicKeyWASM): void
-  getPublicKeyById(keyId: KeyID): IdentityPublicKeyWASM | null
+  getPublicKeyById(keyId: number): IdentityPublicKeyWASM | null
   getPublicKeys(): Array<IdentityPublicKeyWASM>
   static fromHex(hex: string): IdentityWASM
   static fromBase64(base64: string): IdentityWASM
