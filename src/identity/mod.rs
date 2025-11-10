@@ -1,15 +1,12 @@
 use crate::{
     dynamic_value::{DynamicValue, TryToU64, Uint64String},
-    enums::platform_version::{PlatformVersionWASM},
+    enums::platform_version::PlatformVersionWASM,
     identifier::IdentifierWASM,
     identity_public_key::IdentityPublicKeyWASM,
     utils::WithJsError,
 };
 use dpp::{
-    identity::{
-        KeyID,
-        accessors::{IdentityGettersV0, IdentitySettersV0},
-    },
+    identity::accessors::{IdentityGettersV0, IdentitySettersV0},
     platform_value::string_encoding::{Encoding, decode},
     prelude::Identity,
 };

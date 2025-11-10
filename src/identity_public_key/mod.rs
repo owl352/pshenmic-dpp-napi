@@ -279,8 +279,8 @@ impl IdentityPublicKeyWASM {
     }
 
     #[napi(js_name = fromBase64)]
-    pub fn from_base64(hex: String) -> Result<IdentityPublicKeyWASM, napi::Error> {
-        let bytes = decode(&hex, Encoding::Base64)
+    pub fn from_base64(base64: String) -> Result<IdentityPublicKeyWASM, napi::Error> {
+        let bytes = decode(&base64, Encoding::Base64)
             .map_err(|err| napi::Error::new(Status::GenericFailure, err.to_string()))?;
 
         let public_key =

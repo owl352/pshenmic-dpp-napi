@@ -47,7 +47,7 @@ export declare class IdentityPublicKeyWASM {
   base64(): string
   static fromBytes(bytes: Uint8Array): IdentityPublicKeyWASM
   static fromHex(hex: string): IdentityPublicKeyWASM
-  static fromBase64(hex: string): IdentityPublicKeyWASM
+  static fromBase64(base64: string): IdentityPublicKeyWASM
 }
 
 export declare class IdentityWASM {
